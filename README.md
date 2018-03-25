@@ -3,7 +3,7 @@ Yet another event management plugin, but WITHOUT Vue instance
 
 ## About
 
-This is just a simple wrapper around [js-simple-events](https://github.com/kaskar2008/js-simple-events) that helps to manage events in a simple way without creating a Vue instance. It also supports TypeScript!
+This is just a simple wrapper around [js-simple-events](https://github.com/VeryWow/js-simple-events) that helps to manage events in a simple way without creating a Vue instance. It also supports TypeScript!
 
 And it's really light - ~1kb in size!
 
@@ -110,4 +110,4 @@ once: {
 ```
 
 ## Demo
-[webpack 4 biolerplate](https://github.com/Raiondesu/webpack-vue-ts)
+[webpack 4 biolerplate](https://github.com/VeryWow/webpack-vue-ts)

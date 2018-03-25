@@ -8,6 +8,36 @@ class EventManagment extends JSEventManagment {
   $once = super.once
 }
 
+function bindEvents (obj: any, from: string, to: string): void {
+  let evts = obj[from];
+  if (evts) {
+    obj[to] = {}
+    for (var k in evts) {
+      obj[to][k] = ~evts[k].name.indexOf('bound ') ? evts[k] : evts[k].bind(this)
+    }
+  }
+}
+
+function addEventListener(event: string, handler: Function, isOnce: boolean = false): void {
+  Vue.prototype.$events[isOnce ? 'once' : 'on'](event, handler)
+}
+
+function addEventListeners(obj: { [key: string]: Function }, isOnce: boolean = false): void {
+  if (obj) {
+    for (var k in obj) {
+      addEventListener(k, obj[k], isOnce)
+    }
+  }
+}
+
+function removeEventListeners(obj: { [key: string]: Function }) {
+  if (obj) {
+    for (var k in obj) {
+      Vue.prototype.$events.off(k, obj[k])
+    }
+  }
+}
+
 const eventsPlugins: PluginFunction<any> = (Vue) => {
   const eventManagement = new EventManagment();
   Object.defineProperties(Vue.prototype, {
@@ -21,31 +51,19 @@ const eventsPlugins: PluginFunction<any> = (Vue) => {
   Vue.mixin({
     beforeCreate() {
       let $this: any = this;
-      let evts = $this.$options.on;
-      if (evts) {
-        $this.$options.$setEvents = {}
-        for (var k in evts) {
-          $this.$options.$setEvents[k] = ~evts[k].name.indexOf('bound ') ? evts[k] : evts[k].bind(this)
-        }
-      }
+      let options = $this.$options;
+      bindEvents(options, 'on', '$setEventsOn')
+      bindEvents(options, 'once', '$setEventsOnce')
     },
     created() {
       let $this: any = this;
-      let evts = $this.$options.$setEvents;
-      if (evts) {
-        for (var k in evts) {
-          Vue.prototype.$events.on(k, evts[k])
-        }
-      }
+      addEventListeners($this.$options.$setEventsOn, false)
+      addEventListeners($this.$options.$setEventsOnce, true)
     },
     beforeDestroy() {
       let $this: any = this;
-      let evts = $this.$options.$setEvents;
-      if (evts) {
-        for (var k in evts) {
-          Vue.prototype.$events.off(k, evts[k])
-        }
-      }
+      removeEventListeners($this.$options.$setEventsOn)
+      removeEventListeners($this.$options.$setEventsOnce)
     }
   })
 }
@@ -73,6 +91,9 @@ declare module 'vue/types/options' {
     Props=DefaultProps
   > {
     on?: {
+      [key: string]: Function
+    }
+    once?: {
       [key: string]: Function
     }
   }

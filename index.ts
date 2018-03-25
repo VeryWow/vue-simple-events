@@ -8,12 +8,12 @@ class EventManagment extends JSEventManagment {
   $once = super.once
 }
 
-function bindEvents (obj: any, from: string, to: string): void {
+function bindEvents (context, obj: any, from: string, to: string): void {
   let evts = obj[from];
   if (evts) {
     obj[to] = {}
     for (var k in evts) {
-      obj[to][k] = ~evts[k].name.indexOf('bound ') ? evts[k] : evts[k].bind(this)
+      obj[to][k] = ~evts[k].name.indexOf('bound ') ? evts[k] : evts[k].bind(context)
     }
   }
 }
@@ -52,8 +52,8 @@ const eventsPlugins: PluginFunction<any> = (Vue) => {
     beforeCreate() {
       let $this: any = this;
       let options = $this.$options;
-      bindEvents(options, 'on', '$setEventsOn')
-      bindEvents(options, 'once', '$setEventsOnce')
+      bindEvents(this, options, 'on', '$setEventsOn')
+      bindEvents(this, options, 'once', '$setEventsOnce')
     },
     created() {
       let $this: any = this;

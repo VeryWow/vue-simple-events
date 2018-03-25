@@ -3,9 +3,9 @@ Yet another event management plugin, but WITHOUT Vue instance
 
 ## About
 
-This is just a simple class that helps to manage events in a simple way without dependencies. It also supports TypeScript!
+This is just a simple wrapper around [js-simple-events](https://github.com/kaskar2008/js-simple-events) that helps to manage events in a simple way without creating a Vue instance. It also supports TypeScript!
 
-And it's really light - <1kb in size!
+And it's really light - ~1kb in size!
 
 ## Methods
 
@@ -66,3 +66,6 @@ created() {
   // (The 'once' handler isn't fired)
 }
 ```
+
+## Demo
+[webpack 4 application](https://github.com/Raiondesu/webpack-vue-ts)

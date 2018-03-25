@@ -20,4 +20,5 @@
             }
         });
     };
+    exports.default = eventsPlugins;
 });

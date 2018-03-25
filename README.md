@@ -39,14 +39,43 @@ Vue.use(EventManager)
 methods: {
   eventHandler(payload) {
     console.log('Yay, events work!', payload);
+  },
+  eventHandlerOnce(payload) {
+    console.log('This will be called just once!');
   }
 },
 created() {
   this.$events.on('test', this.eventHandler);
-  this.$events.once('test', () => console.log('This will be called just once!'));
+  this.$events.once('test', this.eventHandlerOnce);
 },
 beforeDestroy() {
   this.$events.off('test', this.eventHandler);
+  this.$events.off('test', this.eventHandlerOnce);
+}
+```
+
+P.S.: Alternative way to set your event handlers is through the `on` and `once` Vue constructor options. In that way you shouldn't worry about removing event handlers on `beforeDestroy`.
+
+```js
+/// Component 1
+
+methods: {
+  eventHandler(payload) {
+    console.log('Yay, events work!', payload);
+  },
+  eventHandlerOnce(payload) {
+    console.log('This will be called just once!');
+  }
+},
+on: {
+  test() {
+    this.eventHandler();
+  }
+},
+once: {
+  test() {
+    this.eventHandlerOnce();
+  }
 }
 ```
 

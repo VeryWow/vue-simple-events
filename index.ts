@@ -1,17 +1,15 @@
 import { PluginFunction } from "vue";
-import EventManagment from 'js-simple-events'
+import JSEventManagment from 'js-simple-events'
+
+class EventManagment extends JSEventManagment {
+  $emit = this.emit
+  $on = this.on
+  $off = this.off
+  $once = this.$once
+}
 
 const eventsPlugins: PluginFunction<any> = (Vue) => {
-
-  const eventMap = new EventManagment();
-
-  Object.defineProperties(Vue.prototype, {
-    '$events': {
-      get() {
-        return eventMap;
-      }
-    }
-  });
+  Vue.prototype.$events = new EventManagment();
 }
 
 // Reflect defined shorthands in the Vue types

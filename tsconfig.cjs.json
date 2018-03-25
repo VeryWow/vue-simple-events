@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es5",
+      "es2015",
+      "dom"
+    ],
+    "outDir": "./cjs",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "emitDecoratorMetadata": true,
+    "rootDir": "./"
+  },
+  "exclude": [
+    "./node_modules"
+  ]
+}

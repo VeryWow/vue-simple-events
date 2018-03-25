@@ -1,22 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "noEmit": true,
     "lib": [
       "es5",
       "es2015",
       "dom"
-    ],
-    "outDir": "./",
-    "moduleResolution": "node",
-    "module": "umd",
-    "alwaysStrict": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "noUnusedParameters": true,
-    "emitDecoratorMetadata": true,
-    "rootDir": "./"
-  },
-  "exclude": [
-    "./node_modules"
-  ]
+    ]
+  }
 }

@@ -7,7 +7,9 @@ This is just a simple wrapper around [js-simple-events](https://github.com/kaska
 
 And it's really light - ~1kb in size!
 
-## Methods
+## API
+
+### Methods
 
 Method   | Params            | Description
 -------- | ----------------- | ----------------------------------------------------------------
@@ -22,6 +24,26 @@ Method   | Params            | Description
 `vm.$events.off`    | `event, callback` | Remove event listener(s) for the event.
 `vm.$events.$off`   | `event, callback` | _Alias for `off`_
 `vm.$events.remove` | `event, callback` | _Alias for `off`_
+
+### Component Options
+
+```js
+/// Some component.vue
+export default {
+  // registers event handlers on 'created'
+  on: {
+    handler(arg) {
+      console.log(args)
+    }
+  },
+  // Same as previous, but is called only once.
+  once: {
+    handler() {
+      console.log('Just once')
+    }
+  }
+}
+```
 
 ## Examples
 
@@ -54,31 +76,6 @@ beforeDestroy() {
 }
 ```
 
-P.S.: Alternative way to set your event handlers is through the `on` and `once` Vue constructor options. In that way you shouldn't worry about removing event handlers on `beforeDestroy`.
-
-```js
-/// Component 1
-
-methods: {
-  eventHandler(payload) {
-    console.log('Yay, events work!', payload);
-  },
-  eventHandlerOnce(payload) {
-    console.log('This will be called just once!');
-  }
-},
-on: {
-  test() {
-    this.eventHandler();
-  }
-},
-once: {
-  test() {
-    this.eventHandlerOnce();
-  }
-}
-```
-
 ```js
 /// Component 2
 
@@ -96,5 +93,21 @@ created() {
 }
 ```
 
+Alternative way to set your event handlers is through the `on` and `once` Vue constructor options. In that way you may not worry about removing event handlers in `beforeDestroy` hook. This approach makes code cleaner and reduces the amount of boilerplate code.
+
+```js
+/// Component 1
+on: {
+  test(payload) {
+    console.log('Yay, events work!', payload);
+  }
+},
+once: {
+  test(payload) {
+    console.log('This will be called just once!');
+  }
+}
+```
+
 ## Demo
-[webpack 4 application](https://github.com/Raiondesu/webpack-vue-ts)
+[webpack 4 biolerplate](https://github.com/Raiondesu/webpack-vue-ts)

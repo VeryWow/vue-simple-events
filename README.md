@@ -66,3 +66,6 @@ created() {
   // (The 'once' handler isn't fired)
 }
 ```
+
+## Demo
+[webpack 4 application](https://github.com/Raiondesu/webpack-vue-ts)

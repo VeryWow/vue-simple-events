@@ -24,12 +24,12 @@ var EventManagment = /** @class */ (function (_super) {
     }
     return EventManagment;
 }(js_simple_events_1.default));
-function bindEvents(obj, from, to) {
+function bindEvents(context, obj, from, to) {
     var evts = obj[from];
     if (evts) {
         obj[to] = {};
         for (var k in evts) {
-            obj[to][k] = ~evts[k].name.indexOf('bound ') ? evts[k] : evts[k].bind(this);
+            obj[to][k] = ~evts[k].name.indexOf('bound ') ? evts[k] : evts[k].bind(context);
         }
     }
 }
@@ -65,8 +65,8 @@ var eventsPlugins = function (Vue) {
         beforeCreate: function () {
             var $this = this;
             var options = $this.$options;
-            bindEvents(options, 'on', '$setEventsOn');
-            bindEvents(options, 'once', '$setEventsOnce');
+            bindEvents(this, options, 'on', '$setEventsOn');
+            bindEvents(this, options, 'once', '$setEventsOnce');
         },
         created: function () {
             var $this = this;

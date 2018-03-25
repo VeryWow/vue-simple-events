@@ -20,3 +20,5 @@ declare module 'vue/types/vue' {
     $events: EventManagment
   }
 }
+
+export default eventsPlugins;

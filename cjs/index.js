@@ -15,15 +15,52 @@ var EventManagment = /** @class */ (function (_super) {
     __extends(EventManagment, _super);
     function EventManagment() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.$emit = _this.emit;
-        _this.$on = _this.on;
-        _this.$off = _this.off;
-        _this.$once = _this.$once;
+        _this.$emit = _super.prototype.emit;
+        _this.$on = _super.prototype.on;
+        _this.$off = _super.prototype.off;
+        _this.$once = _super.prototype.once;
         return _this;
     }
     return EventManagment;
 }(js_simple_events_1.default));
 var eventsPlugins = function (Vue) {
-    Vue.prototype.$events = new EventManagment();
+    var eventManagement = new EventManagment();
+    Object.defineProperties(Vue.prototype, {
+        '$events': {
+            get: function () {
+                return eventManagement;
+            }
+        }
+    });
+    Vue.mixin({
+        beforeCreate: function () {
+            var $this = this;
+            var evts = $this.$options.on;
+            if (evts) {
+                $this.$options.$setEvents = {};
+                for (var k in evts) {
+                    $this.$options.$setEvents[k] = ~evts[k].name.indexOf('bound ') ? evts[k] : evts[k].bind(this);
+                }
+            }
+        },
+        created: function () {
+            var $this = this;
+            var evts = $this.$options.$setEvents;
+            if (evts) {
+                for (var k in evts) {
+                    Vue.prototype.$events.on(k, evts[k]);
+                }
+            }
+        },
+        beforeDestroy: function () {
+            var $this = this;
+            var evts = $this.$options.$setEvents;
+            if (evts) {
+                for (var k in evts) {
+                    Vue.prototype.$events.off(k, evts[k]);
+                }
+            }
+        }
+    });
 };
 exports.default = eventsPlugins;
